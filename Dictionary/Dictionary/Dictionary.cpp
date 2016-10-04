@@ -50,13 +50,70 @@ int Dictionary::hash(string word, wordType type)
 			   // Various methods for calculating the hash value
 	for (int i = 0; i < word.length(); i++)
 	{
-		int value = static_cast<int>(word[i]);
-//		hash += static_cast<int>(word[i]);
-//		hash += static_cast<int>(word[i]) * (pow(2, i));
-//		hash += pow(static_cast<int>(word[i]), 5);
+		//	int value = static_cast<int>(word[i]);
+	//		hash += static_cast<int>(word[i]);
+	//		hash += static_cast<int>(word[i]) * (pow(2, i));
+	//		hash += pow(static_cast<int>(word[i]), 5);
 
+		int charVal = static_cast<int>(word[i]);
+
+		if (charVal == 106 || charVal == 113 || charVal == 120 || charVal == 122
+			|| charVal == 119 || charVal == 107) // group 0
+		{
+			hash += charVal * 1009;
+		}
+		else if (charVal == 118 || charVal == 102
+			|| charVal == 121
+			|| charVal == 98) // group 1
+		{
+			hash += charVal * 998;
+		}
+		else if (charVal == 104
+			|| charVal == 109
+			|| charVal == 112
+			|| charVal == 103) // group 2
+		{
+			hash += charVal * 887;
+		}
+		else if (charVal == 117
+			|| charVal == 100
+			|| charVal == 99) // group 3
+		{
+			hash += charVal * 776;
+		}
+		else if (charVal == 108
+			|| charVal == 111) // group 5
+		{
+			hash += charVal * 665;
+		}
+		else if (charVal == 116) // group 6
+		{
+			hash += charVal * 554;
+		}
+		else if (charVal == 114
+			|| charVal == 110
+			|| charVal == 97) // group 7
+		{
+			hash += charVal * 443;
+		}
+		else if (charVal == 105) // group 8
+		{
+			hash += charVal * 332;
+		}
+		else if (charVal == 115) // group 9
+		{
+			hash += charVal * 221;
+		}
+		else if (charVal == 101) // group 11
+		{
+			hash += charVal * 110;
+		}
+		else
+		{
+			//cout << charVal << endl;
+		}
 		// Value range = [97-122]
-		if (value <= 102)
+		/*if (value <= 102)
 			hash += value * 1;
 		else if (value <= 107)
 			hash += value * 2;
@@ -65,10 +122,11 @@ int Dictionary::hash(string word, wordType type)
 		else if (value <= 117)
 			hash += value * 4;
 		else
-			hash += value * 5;
+			hash += value * 5;*/
 	} // End for
 
-//	cout << "Hash = " << hash << endl;
+
+	cout << "Hash = " << hash << endl;
 
 	// Calculate the index using modulo operation
 	index = hash % TABLE_SIZE;
@@ -142,7 +200,7 @@ string Dictionary::printTable()
 
 	// creates txt file for saving the output of the table
 	ofstream file;
-	file.open("Attempt 05.txt");
+	file.open("weight attempt 1.txt");
 
 
 	for (int i = 0; i < TABLE_SIZE; i++)

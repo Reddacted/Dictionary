@@ -21,7 +21,7 @@ class Dictionary
 {
 
 private:
-	static const int TABLE_SIZE = 1000; // The size of the array. Affects hash calculation when changed
+	static const int TABLE_SIZE = 20000; // The size of the array. Affects hash calculation when changed
 
 									   // The item structure that represents a dictionary entry
 	struct entry

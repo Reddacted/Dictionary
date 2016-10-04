@@ -100,7 +100,10 @@ static void addWord()
 
 int main()
 {
+//	Dictionary dict;
+//	string cat = "cat";
 //	 open up from txt file
+
 	inFile.open("2of12.txt");
 	while (!inFile.eof()) // To get you all the lines
 	{
@@ -109,15 +112,15 @@ int main()
 
 	} // End while
 
-	// user input to add words
-
-
 	inFile.close();
 
 //	addWord(); // calls the function for user input
 
-	dic.printTable();
+	dic.printTable(); 
 
+	/*cout << "Hash value = " << dict.hash(cat, wordType::NOUN) << endl;
+	dict.addItem(cat, wordType::NOUN, "kitty");
+	dict.printTable(); */
 	system("pause");
 
 	return 0;
