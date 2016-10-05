@@ -41,20 +41,124 @@ Dictionary::Dictionary()
 // ------------
 // string word			The word
 // wordType type		The type
+int Dictionary::hash(string word, wordType type)
+{
+	unsigned int hash = 0; // The hash value for the word
+	int index; // Where the word is stored in the array
+	int minVal = 97; // 97 is an 'a' in ASCII
+	int value; // Temporary storage of values used in hash calc
 
+	// Complex weight system based on gathered data
+	for (int i = 0; i < word.length(); i++)
+	{
+		value = static_cast<int>(word[i]);
+
+		int weightIndex = value - minVal;
+		if (weightIndex >= 0 || weightIndex < 26)
+		{
+			value = value * weights[value - minVal];
+		}
+		hash += value;
+	} // End for
+
+
+	cout << "Hash = " << hash << endl;
+
+	// Calculate the index using modulo operation
+	index = hash % TABLE_SIZE;
+
+	return index;
+} // End hash
+
+
+/*
+// ------------------------------------------------------------------
+// After this comment, these are all the different attempts
+// we had tried for a proper hash function.
+// ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
 	unsigned int hash = 0; // The hash value for the word
 	int index; // Where the word is stored
 
-			   // Various methods for calculating the hash value
+	// Simple use of ASCII values to calculate hash
 	for (int i = 0; i < word.length(); i++)
 	{
-		//	int value = static_cast<int>(word[i]);
-	//		hash += static_cast<int>(word[i]);
-	//		hash += static_cast<int>(word[i]) * (pow(2, i));
-	//		hash += pow(static_cast<int>(word[i]), 5);
+		hash += static_cast<int>(word[i]);
+	}
 
+	cout << "Hash = " << hash << endl;
+
+	// Calculate the index using modulo operation
+	index = hash % TABLE_SIZE;
+
+	return index;
+}
+
+
+// ------------------------------------------------------------------
+int Dictionary::hash(string word, wordType type)
+{
+	unsigned int hash = 0; // The hash value for the word
+	int index; // Where the word is stored
+
+	// Use of ASCII values taken to various powers of 2
+	for (int i = 0; i < word.length(); i++)
+	{
+		hash += static_cast<int>(word[i]) * (pow(2, i));
+	}
+
+	cout << "Hash = " << hash << endl;
+
+	// Calculate the index using modulo operation
+	index = hash % TABLE_SIZE;
+
+	return index;
+}
+
+
+// ------------------------------------------------------------------
+int Dictionary::hash(string word, wordType type)
+{
+	unsigned int hash = 0; // The hash value for the word
+	int index; // Where the word is stored
+
+	// A simple weighting system of ASCII values
+	for (int i = 0; i < word.length(); i++)
+	{
+		int value = static_cast<int>(word[i]);
+
+		// Value range = [97-122]
+		if (value <= 102)
+		hash += value * 1;
+		else if (value <= 107)
+		hash += value * 2;
+		else if (value <= 112)
+		hash += value * 3;
+		else if (value <= 117)
+		hash += value * 4;
+		else
+		hash += value * 5;
+	}
+
+	cout << "Hash = " << hash << endl;
+
+	// Calculate the index using modulo operation
+	index = hash % TABLE_SIZE;
+
+	return index;
+}
+
+
+// ------------------------------------------------------------------
+int Dictionary::hash(string word, wordType type)
+{
+	unsigned int hash = 0; // The hash value for the word
+	int index; // Where the word is stored in the array
+
+	// More complex weight system using gathered data
+	for (int i = 0; i < word.length(); i++)
+	{
 		int charVal = static_cast<int>(word[i]);
 
 		if (charVal == 106 || charVal == 113 || charVal == 120 || charVal == 122
@@ -110,19 +214,9 @@ int Dictionary::hash(string word, wordType type)
 		}
 		else
 		{
+			// Basically do nothing with odd characters
 			//cout << charVal << endl;
 		}
-		// Value range = [97-122]
-		/*if (value <= 102)
-			hash += value * 1;
-		else if (value <= 107)
-			hash += value * 2;
-		else if (value <= 112)
-			hash += value * 3;
-		else if (value <= 117)
-			hash += value * 4;
-		else
-			hash += value * 5;*/
 	} // End for
 
 
@@ -133,6 +227,10 @@ int Dictionary::hash(string word, wordType type)
 
 	return index;
 } // End hash
+// ------------------------------------------------------------------
+// End of hash functions
+// ------------------------------------------------------------------
+*/
 
 
 // --------
@@ -233,3 +331,145 @@ string Dictionary::printTable()
 
 	return out;
 } // End printTable
+
+// ----------------
+// printDictionary
+// ----------------
+// Prints the dictionary to a file that is formatted
+// so that it can be reused and rewritten to whenever
+// the program is run
+
+void Dictionary::printDictionary()
+{
+	entry* entry;
+	string type;
+
+	// creates txt file for saving the output of the table
+	ofstream file;
+	file.open("Dictionary.txt");
+
+	for (int i = 0; i < TABLE_SIZE; i++)
+	{
+		entry = jisho[i];
+
+		if (entry->word == "0")
+		{
+			continue;
+		}
+
+		switch (entry->wordType)
+		{
+		case wordType::NOUN:
+		{
+			type = "n";
+			break;
+		}
+		case wordType::VERB:
+		{
+			type = "v";
+			break;
+		}
+		case wordType::ADJECTIVE:
+		{
+			type = "adj";
+			break;
+		}
+		case wordType::ADVERB:
+		{
+			type = "adv";
+			break;
+		}
+		case wordType::PRONOUN:
+		{
+			type = "pro";
+			break;
+		}
+		case wordType::PREPOSITION:
+		{
+			type = "pre";
+			break;
+		}
+		case wordType::CONJUNCTION:
+		{
+			type = "c";
+			break;
+		}
+		case wordType::DETERMINER:
+		{
+			type = "d";
+			break;
+		}
+		case wordType::EXCLAMATION:
+		{
+			type = "e";
+			break;
+		}
+		default:
+		{
+			type = "FAIL";
+		}
+		} // End switch
+
+		file << entry->word << "  " << type << endl;
+
+		while (entry->next != NULL)
+		{
+			entry = entry->next;
+
+			switch (entry->wordType)
+			{
+			case wordType::NOUN:
+			{
+				type = "n";
+				break;
+			}
+			case wordType::VERB:
+			{
+				type = "v";
+				break;
+			}
+			case wordType::ADJECTIVE:
+			{
+				type = "adj";
+				break;
+			}
+			case wordType::ADVERB:
+			{
+				type = "adv";
+				break;
+			}
+			case wordType::PRONOUN:
+			{
+				type = "pro";
+				break;
+			}
+			case wordType::PREPOSITION:
+			{
+				type = "pre";
+				break;
+			}
+			case wordType::CONJUNCTION:
+			{
+				type = "c";
+				break;
+			}
+			case wordType::DETERMINER:
+			{
+				type = "d";
+				break;
+			}
+			case wordType::EXCLAMATION:
+			{
+				type = "e";
+				break;
+			}
+			default:
+			{
+				type = "FAIL";
+			}
+			} // End switch
+
+			file << entry->word << "  " << type << endl;
+		} // End while
+	} // End for
+}

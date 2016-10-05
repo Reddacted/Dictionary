@@ -103,12 +103,72 @@ int main()
 //	Dictionary dict;
 //	string cat = "cat";
 //	 open up from txt file
+	string line;
+	string type;
+	string delimiter = "  ";
+	wordType wordType;
 
-	inFile.open("2of12.txt");
+	inFile.open("Words With Type.txt");
 	while (!inFile.eof()) // To get you all the lines
 	{
-		getline(inFile, word); // Saves the line in word
-		dic.addItem(word, wordType::NOUN, "A DEFINITION");
+		getline(inFile, line); // Saves the line in word
+		
+		// Split the line into the two parts
+		size_t pos = 0;
+		while ((pos = line.find(delimiter)) != string::npos)
+		{
+			word = line.substr(0, pos);
+			line.erase(0, pos + delimiter.length());
+			type = line;
+		}
+
+
+		// Get the actual type from the enum
+		if (type.compare("n") == 0)
+		{
+			wordType = wordType::NOUN;
+		}
+		else if (type.compare("v") == 0)
+		{
+			wordType = wordType::VERB;
+		}
+		else if (type.compare("adj") == 0)
+		{
+			wordType = wordType::ADJECTIVE;
+		}
+		else if (type.compare("adv") == 0)
+		{
+			wordType = wordType::ADVERB;
+		}
+		else if (type.compare("pro") == 0)
+		{
+			wordType = wordType::PRONOUN;
+		}
+		else if (type.compare("pre") == 0)
+		{
+			wordType = wordType::PREPOSITION;
+		}
+		else if (type.compare("c") == 0)
+		{
+			wordType = wordType::CONJUNCTION;
+		}
+		else if (type.compare("d") == 0)
+		{
+			wordType = wordType::DETERMINER;
+		}
+		else if (type.compare("e") == 0)
+		{
+			wordType = wordType::EXCLAMATION;
+		}
+		else
+		{
+			wordType = wordType::NOUN;
+		}
+		
+
+		// Put the two parts into the function, still with
+		// a generic definition
+		dic.addItem(word, wordType, "A DEFINITION");
 
 	} // End while
 
@@ -116,7 +176,8 @@ int main()
 
 //	addWord(); // calls the function for user input
 
-	dic.printTable(); 
+//	dic.printTable();
+	dic.printDictionary();
 
 	/*cout << "Hash value = " << dict.hash(cat, wordType::NOUN) << endl;
 	dict.addItem(cat, wordType::NOUN, "kitty");

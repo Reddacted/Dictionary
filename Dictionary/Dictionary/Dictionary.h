@@ -21,7 +21,7 @@ class Dictionary
 {
 
 private:
-	static const int TABLE_SIZE = 20000; // The size of the array. Affects hash calculation when changed
+	static const int TABLE_SIZE = 10; // The size of the array. Affects hash calculation when changed
 
 									   // The item structure that represents a dictionary entry
 	struct entry
@@ -33,12 +33,16 @@ private:
 	};
 
 	entry* jisho[TABLE_SIZE];	// Array of pointers to entry (the dictionary array itself)
+	unsigned int weights[26] = { 7276, 1877, 3982, 3684, 11838, 1374, 2962, 2196, 8839,
+								177, 885, 5135, 2665, 7140, 5995, 2815, 185, 7073, 9804,
+								6727, 3333, 1010, 874, 267, 1464, 412};	// The weight values for all letters
 
 public:
 	Dictionary();
 	int hash(string word, wordType type);
 	bool addItem(string word, wordType type, string definition);
 	string printTable();
+	void printDictionary();
 };
 
 #endif

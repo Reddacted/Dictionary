@@ -1,5 +1,3 @@
-﻿  Dictionary.cpp
-e:\vince\my documents\visual studio 2015\projects\dictionary\dictionary\dictionary.cpp(51): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\visual studio 2015\projects\dictionary\dictionary\dictionary.cpp(95): warning C4018: '<': signed/unsigned mismatch
-  Dictionary.vcxproj -> e:\vince\my documents\visual studio 2015\Projects\Dictionary\Debug\Dictionary.exe
-  Dictionary.vcxproj -> e:\vince\my documents\visual studio 2015\Projects\Dictionary\Debug\Dictionary.pdb (Partial PDB)
+﻿  Driver.cpp
+  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
+  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)
