@@ -1,3 +1,13 @@
-﻿  Driver.cpp
-  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
-  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)
+﻿  TestDriver.cpp
+e:\vince\my documents\github\dictionary\dictionary\dictionary\testdriver.cpp(26): error C3867: 'Dictionary::printDictionary': non-standard syntax; use '&' to create a pointer to member
+  Dictionary.cpp
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(56): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(259): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(324): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(385): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(441): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(495): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(530): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Driver.cpp

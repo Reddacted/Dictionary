@@ -14,35 +14,53 @@ using namespace std;
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+	// The types that words can have along with a FAIL identifier when
+	// attempting to find the type and you are unsuccessful
 	enum class wordType {
-		NOUN = 1, VERB, ADJECTIVE, ADVERB, PRONOUN,
-		PREPOSITION, CONJUNCTION, DETERMINER, EXCLAMATION };
+		NOUN = 1, VERB, ADJECTIVE, ADVERB, PRONOUN, PREPOSITION,
+		CONJUNCTION, DETERMINER, EXCLAMATION, PREFIX, SUFFIX, UNKNOWN };
 class Dictionary
 {
 
 private:
-	static const int TABLE_SIZE = 10; // The size of the array. Affects hash calculation when changed
+	static const int TABLE_SIZE = 1000; // The size of the array. Affects hash calculation when changed
+	unsigned int entries; // Counter for the total amount of entries added
 
-									   // The item structure that represents a dictionary entry
+	// Structure that represents individual definitions
+	struct definition
+	{
+		wordType type;			// The type of the word for this definition
+		string def;				// The definition of the word
+		definition* next;		// The pointer to the next definition if it exists
+	};
+
+	// The item structure that represents a dictionary entry
 	struct entry
 	{
-		string word;		// The word stored in English (for the moment)
-		wordType wordType;	// The type of word (i.e. noun, adjective, etc.)
-		string definition;	// The definition(s) of the word (might change to a pointer)
-		entry* next;		// Linked list pointer, connects list items to one another)
+		string word;				// The word stored in English (for the moment)
+		definition* definition;		// The definitions of the word
+		entry* next;				// Linked list pointer, connects list items to one another)
 	};
 
 	entry* jisho[TABLE_SIZE];	// Array of pointers to entry (the dictionary array itself)
-	unsigned int weights[26] = { 7276, 1877, 3982, 3684, 11838, 1374, 2962, 2196, 8839,
-								177, 885, 5135, 2665, 7140, 5995, 2815, 185, 7073, 9804,
-								6727, 3333, 1010, 874, 267, 1464, 412};	// The weight values for all letters
+
+	// The weight values for all letters for use in hash calculations
+	unsigned int weights[26] = { 81523, 18479, 43560, 32256, 108336, 11558, 23915, 25792, 88799,
+								1512, 7638, 55945, 29805, 72211, 72089, 32512, 1698, 70945, 73182,
+								66797, 37748, 9680, 6577, 3015, 20259, 4154};
 
 public:
 	Dictionary();
-	int hash(string word, wordType type);
-	bool addItem(string word, wordType type, string definition);
+	int hash(string word);
+	bool addEntry(string word);
+	bool addEntry(string word, wordType type, string definition);
+	bool addDefinition(string word, string def, wordType type);
+	bool changeDefinition(string word, string def, wordType type, int defIndex);
+	wordType getType(string word);
+	string getDefinition(string word);
+	unsigned int getSize();
 	string printTable();
-	void printDictionary();
+	string printDictionary();
 };
 
 #endif

@@ -26,10 +26,14 @@ Dictionary::Dictionary()
 		// Initialization
 		jisho[i] = new entry;
 		jisho[i]->word = "0";
-		jisho[i]->wordType = wordType::NOUN;
-		jisho[i]->definition = "0";
+		jisho[i]->definition = new definition;
+		jisho[i]->definition->type = wordType::NOUN;
+		jisho[i]->definition->def = "0";
+		jisho[i]->definition->next = NULL;
 		jisho[i]->next = NULL;
 	} // End for
+
+	entries = 0;
 } // End constructor
 
 
@@ -41,7 +45,7 @@ Dictionary::Dictionary()
 // ------------
 // string word			The word
 // wordType type		The type
-int Dictionary::hash(string word, wordType type)
+int Dictionary::hash(string word)
 {
 	unsigned int hash = 0; // The hash value for the word
 	int index; // Where the word is stored in the array
@@ -62,7 +66,7 @@ int Dictionary::hash(string word, wordType type)
 	} // End for
 
 
-	cout << "Hash = " << hash << endl;
+//	cout << "Hash = " << hash << endl;
 
 	// Calculate the index using modulo operation
 	index = hash % TABLE_SIZE;
@@ -94,8 +98,10 @@ int Dictionary::hash(string word, wordType type)
 
 	return index;
 }
+*/
 
 
+/*
 // ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
@@ -115,8 +121,10 @@ int Dictionary::hash(string word, wordType type)
 
 	return index;
 }
+*/
 
 
+/*
 // ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
@@ -148,8 +156,10 @@ int Dictionary::hash(string word, wordType type)
 
 	return index;
 }
+*/
 
 
+/*
 // ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
@@ -233,18 +243,16 @@ int Dictionary::hash(string word, wordType type)
 */
 
 
-// --------
-// addItem
-// --------
+// ---------
+// addEntry
+// ---------
 // Adds an entry to the dictionary
 // --------------------------------
 // string word			The word
-// wordType type		The type of word
-// string definition	The definition of the word
 //
 // return bool			Returns true if the word was successfully
 //						added
-bool Dictionary::addItem(string word, wordType type, string definition)
+bool Dictionary::addEntry(string word)
 {
 	// Make the word lowercase
 	locale loc;
@@ -253,34 +261,307 @@ bool Dictionary::addItem(string word, wordType type, string definition)
 		word[i] = tolower(word[i], loc);
 	}
 
-	int index = hash(word, type);
+	int index = hash(word);
 
 	if (jisho[index]->word == "0")
 	{
 		jisho[index]->word = word;
-		jisho[index]->wordType = type;
-		jisho[index]->definition = definition;
+		jisho[index]->definition->type = wordType::UNKNOWN;
+		jisho[index]->definition->def = "0";
 	} // End if
+	else if (jisho[index]->word.compare(word) == 0) // If the words are exactly the same
+	{
+		// Entry add failed
+		return false;
+	}
 	else
 	{
 		entry* ptr = jisho[index];
-		entry* n = new entry;
 
-		n->word = word;
-		n->wordType = type;
-		n->definition = definition;
-		n->next = NULL;
-
+		// Move through the linked list until there is an empty spot
 		while (ptr->next != NULL)
 		{
+			// Again, if the words are the same, fail the add operation
+			if (ptr->word.compare(word) == 0)
+			{
+				return false;
+			}
 			ptr = ptr->next;
 		} // End while
+
+		  // Found a spot, so create the new entry
+		entry* n = new entry;
+		n->definition = new Dictionary::definition;
+
+		n->word = word;
+		n->definition->type = wordType::UNKNOWN;
+		n->definition->def = "0";
+		n->next = NULL;
 
 		ptr->next = n;
 	} // End else
 
+	entries++;
 	return true;
 } // End addItem
+
+
+// ---------
+// addEntry
+// ---------
+// Adds an entry to the dictionary
+// --------------------------------
+// string word			The word
+// wordType type		The type of word
+// string definition	The definition of the word
+//
+// return bool			Returns true if the word was successfully
+//						added
+bool Dictionary::addEntry(string word, wordType type, string definition)
+{
+	// Make the word lowercase
+	locale loc;
+	for (int i = 0; i < word.length(); i++)
+	{
+		word[i] = tolower(word[i], loc);
+	}
+
+	int index = hash(word);
+
+	if (jisho[index]->word == "0")
+	{
+		jisho[index]->word = word;
+		jisho[index]->definition->type = type;
+		jisho[index]->definition->def = definition;
+	} // End if
+	else if (jisho[index]->word.compare(word) == 0) // If the words are exactly the same
+	{
+		// Entry add failed
+		return false;
+	}
+	else
+	{
+		entry* ptr = jisho[index];
+
+		// Move through the linked list until there is an empty spot
+		while (ptr->next != NULL)
+		{
+			// Again, if the words are the same, fail the add operation
+			if (ptr->word.compare(word) == 0)
+			{
+				return false;
+			}
+			ptr = ptr->next;
+		} // End while
+
+		// Found a spot, so create the new entry
+		entry* n = new entry;
+		n->definition = new Dictionary::definition;
+
+		n->word = word;
+		n->definition->type = type;
+		n->definition->def = definition;
+		n->next = NULL;
+
+		ptr->next = n;
+	} // End else
+
+	entries++;
+	return true;
+} // End addItem
+
+
+// --------------
+// addDefinition
+// --------------
+//
+//
+//
+//
+bool Dictionary::addDefinition(string word, string def, wordType type)
+{
+	// Make the word lowercase
+	locale loc;
+	for (int i = 0; i < word.length(); i++)
+	{
+		word[i] = tolower(word[i], loc);
+	}
+
+	int index = hash(word);
+
+	// Attempt to find the specified word
+	entry* ptr = jisho[index];
+	bool notFound = true;
+	while (ptr->next != NULL)
+	{
+		if (ptr->word.compare(word) == 0)
+		{
+			notFound = false;
+		}
+		else
+			ptr = ptr->next;
+	}
+
+	// If the word entry doesn't exist, fail the operation
+	if (notFound)
+		return false;
+
+	// Find the last definition
+	definition* defptr = ptr->definition;
+	while (defptr->next != NULL)
+	{
+		defptr = defptr->next;
+	}
+
+	// Now add the new definition
+	defptr->next = new Dictionary::definition;
+	defptr = defptr->next;
+	defptr->def = def;
+	defptr->type = type;
+	return true;
+
+} // End addDefinition
+
+
+// -----------------
+// changeDefinition
+// -----------------
+// Changes the selected definition of the selected word
+// -----------------------------------------------------
+// string word		The word
+// string def		The new definition
+// wordType type	The type associated with the definition
+// int index		The index of the definition (0-inf)
+//
+// return bool		Returns true if it succeeds in changing the definition
+bool Dictionary::changeDefinition(string word, string def, wordType type, int defIndex)
+{
+	// Make the word lowercase
+	locale loc;
+	for (int i = 0; i < word.length(); i++)
+	{
+		word[i] = tolower(word[i], loc);
+	}
+
+	int index = hash(word);
+
+	// Attempt to find the specified word
+	entry* ptr = jisho[index];
+	bool notFound = true;
+	while (ptr->next != NULL)
+	{
+		if (ptr->word.compare(word) == 0)
+		{
+			notFound = false;
+		}
+		else
+			ptr = ptr->next;
+	}
+
+	// If the word entry doesn't exist, fail the operation
+	if (notFound)
+		return false;
+
+	// Attempt to find the specified definition entry
+	definition* defptr = ptr->definition;
+	for (int i = 0; i <= defIndex; i++)
+	{
+		if (defptr->next != NULL)
+			defptr = defptr->next;
+		else
+			return false; // No definition at the specified index
+	}
+
+	// Found it, now change the definition
+	defptr->def = def;
+	defptr->type = type;
+
+	return true;
+} // End changeDefinition
+
+
+// --------
+// getType
+// --------
+// Gets the type of the specified word
+// ------------------------------------
+// string word			The word
+//
+// return wordType		Returns the word's type as the wordType enum
+wordType Dictionary::getType(string word)
+{
+	// Make the word lowercase
+	locale loc;
+	for (int i = 0; i < word.length(); i++)
+	{
+		word[i] = tolower(word[i], loc);
+	}
+
+	int index = hash(word);
+
+	// Find the specific word if there are multiple at
+	// this index
+	entry* ptr = jisho[index];
+	while (ptr->next != NULL)
+	{
+		if (ptr->word.compare(word) == 0)
+			return ptr->definition->type;
+		else
+			ptr = ptr->next;
+	} // End while
+
+	// If we fail, then return the unkown type
+	return wordType::UNKNOWN;
+} // End getType
+
+
+// --------------
+// getDefinition
+// --------------
+// Finds a specific word's definition
+// -----------------------------------
+// string word				The word
+//
+// return definition		Returns the definition struct
+string Dictionary::getDefinition(string word)
+{
+	// Make the word lowercase
+	locale loc;
+	for (int i = 0; i < word.length(); i++)
+	{
+		word[i] = tolower(word[i], loc);
+	}
+
+	int index = hash(word);
+
+	// Find the specific word if there are multiple at
+	// this index
+	entry* ptr = jisho[index];
+	while (ptr->next != NULL)
+	{
+		if (ptr->word.compare(word) == 0)
+			return ptr->definition->def;
+		else
+			ptr = ptr->next;
+	} // End while
+
+	// If for some reason we fail, then return
+	// a failure string
+	return "FAILED";
+} // End getDefinition
+
+
+// --------
+// getSize
+// --------
+// Gets the size of the dictionary ( how many entries it has)
+// -----------------------------------------------------------
+// return unsigned int		Returns an unsigned integer representing
+//							the total amount of entries
+unsigned int Dictionary::getSize()
+{
+	return entries;
+} // End getSize
 
 
 // -----------
@@ -295,11 +576,6 @@ string Dictionary::printTable()
 {
 	string out = "";
 	entry* entry;
-
-	// creates txt file for saving the output of the table
-	ofstream file;
-	file.open("weight attempt 1.txt");
-
 
 	for (int i = 0; i < TABLE_SIZE; i++)
 	{
@@ -326,11 +602,9 @@ string Dictionary::printTable()
 		out += "\n";
 	} // End for
 
-	file << out;
-	file.close();
-
 	return out;
 } // End printTable
+
 
 // ----------------
 // printDictionary
@@ -338,15 +612,13 @@ string Dictionary::printTable()
 // Prints the dictionary to a file that is formatted
 // so that it can be reused and rewritten to whenever
 // the program is run
-
-void Dictionary::printDictionary()
+// -------------------
+// return string		The dictionary as a string (can be huge so consider changing this later)
+string Dictionary::printDictionary()
 {
 	entry* entry;
 	string type;
-
-	// creates txt file for saving the output of the table
-	ofstream file;
-	file.open("Dictionary.txt");
+	string out = "";
 
 	for (int i = 0; i < TABLE_SIZE; i++)
 	{
@@ -357,7 +629,7 @@ void Dictionary::printDictionary()
 			continue;
 		}
 
-		switch (entry->wordType)
+		switch (entry->definition->type)
 		{
 		case wordType::NOUN:
 		{
@@ -386,7 +658,7 @@ void Dictionary::printDictionary()
 		}
 		case wordType::PREPOSITION:
 		{
-			type = "pre";
+			type = "prep";
 			break;
 		}
 		case wordType::CONJUNCTION:
@@ -404,19 +676,29 @@ void Dictionary::printDictionary()
 			type = "e";
 			break;
 		}
+		case wordType::PREFIX:
+		{
+			type = "pref";
+			break;
+		}
+		case wordType::SUFFIX:
+		{
+			type = "s";
+			break;
+		}
 		default:
 		{
 			type = "FAIL";
 		}
 		} // End switch
 
-		file << entry->word << "  " << type << endl;
+		out += entry->word + "  " + type + "\n";
 
 		while (entry->next != NULL)
 		{
 			entry = entry->next;
 
-			switch (entry->wordType)
+			switch (entry->definition->type)
 			{
 			case wordType::NOUN:
 			{
@@ -445,7 +727,7 @@ void Dictionary::printDictionary()
 			}
 			case wordType::PREPOSITION:
 			{
-				type = "pre";
+				type = "prep";
 				break;
 			}
 			case wordType::CONJUNCTION:
@@ -463,13 +745,25 @@ void Dictionary::printDictionary()
 				type = "e";
 				break;
 			}
+			case wordType::PREFIX:
+			{
+				type = "pref";
+				break;
+			}
+			case wordType::SUFFIX:
+			{
+				type = "s";
+				break;
+			}
 			default:
 			{
 				type = "FAIL";
 			}
 			} // End switch
 
-			file << entry->word << "  " << type << endl;
+			out += entry->word + "  " + type + "\n";
 		} // End while
 	} // End for
+
+	return out;
 }
