@@ -374,11 +374,11 @@ bool Dictionary::addEntry(string word, wordType type, string definition)
 // --------------
 // addDefinition
 // --------------
+// Adds a definition to an existing entry
+// ---------------------------------------
 //
 //
-//
-//
-bool Dictionary::addDefinition(string word, string def, wordType type)
+bool Dictionary::addDefinition(string word, wordType type, string def)
 {
 	// Make the word lowercase
 	locale loc;
@@ -392,14 +392,18 @@ bool Dictionary::addDefinition(string word, string def, wordType type)
 	// Attempt to find the specified word
 	entry* ptr = jisho[index];
 	bool notFound = true;
-	while (ptr->next != NULL)
+	bool first = true;
+	while (notFound)
 	{
 		if (ptr->word.compare(word) == 0)
-		{
 			notFound = false;
+		else if (ptr->next != NULL)
+		{
+			ptr = ptr->next;
+			first = false;
 		}
 		else
-			ptr = ptr->next;
+			break;
 	}
 
 	// If the word entry doesn't exist, fail the operation
@@ -414,10 +418,19 @@ bool Dictionary::addDefinition(string word, string def, wordType type)
 	}
 
 	// Now add the new definition
-	defptr->next = new Dictionary::definition;
-	defptr = defptr->next;
-	defptr->def = def;
-	defptr->type = type;
+	if (first)
+	{
+		defptr->type = type;
+		defptr->def = def;
+	}
+	else
+	{
+		defptr->next = new Dictionary::definition;
+		defptr = defptr->next;
+		defptr->type = type;
+		defptr->def = def;
+	}
+
 	return true;
 
 } // End addDefinition
@@ -434,7 +447,7 @@ bool Dictionary::addDefinition(string word, string def, wordType type)
 // int index		The index of the definition (0-inf)
 //
 // return bool		Returns true if it succeeds in changing the definition
-bool Dictionary::changeDefinition(string word, string def, wordType type, int defIndex)
+bool Dictionary::changeDefinition(string word, wordType type, string def, int defIndex)
 {
 	// Make the word lowercase
 	locale loc;
@@ -448,14 +461,14 @@ bool Dictionary::changeDefinition(string word, string def, wordType type, int de
 	// Attempt to find the specified word
 	entry* ptr = jisho[index];
 	bool notFound = true;
-	while (ptr->next != NULL)
+	while (notFound)
 	{
 		if (ptr->word.compare(word) == 0)
-		{
 			notFound = false;
-		}
-		else
+		else if (ptr->next != NULL)
 			ptr = ptr->next;
+		else
+			break;
 	}
 
 	// If the word entry doesn't exist, fail the operation
@@ -464,7 +477,7 @@ bool Dictionary::changeDefinition(string word, string def, wordType type, int de
 
 	// Attempt to find the specified definition entry
 	definition* defptr = ptr->definition;
-	for (int i = 0; i <= defIndex; i++)
+	for (int i = 0; i < defIndex; i++)
 	{
 		if (defptr->next != NULL)
 			defptr = defptr->next;
@@ -618,86 +631,15 @@ string Dictionary::printDictionary()
 {
 	entry* entry;
 	string type;
+	string def;
 	string out = "";
 
 	for (int i = 0; i < TABLE_SIZE; i++)
 	{
 		entry = jisho[i];
 
-		if (entry->word == "0")
+		while (entry->word != "0")
 		{
-			continue;
-		}
-
-		switch (entry->definition->type)
-		{
-		case wordType::NOUN:
-		{
-			type = "n";
-			break;
-		}
-		case wordType::VERB:
-		{
-			type = "v";
-			break;
-		}
-		case wordType::ADJECTIVE:
-		{
-			type = "adj";
-			break;
-		}
-		case wordType::ADVERB:
-		{
-			type = "adv";
-			break;
-		}
-		case wordType::PRONOUN:
-		{
-			type = "pro";
-			break;
-		}
-		case wordType::PREPOSITION:
-		{
-			type = "prep";
-			break;
-		}
-		case wordType::CONJUNCTION:
-		{
-			type = "c";
-			break;
-		}
-		case wordType::DETERMINER:
-		{
-			type = "d";
-			break;
-		}
-		case wordType::EXCLAMATION:
-		{
-			type = "e";
-			break;
-		}
-		case wordType::PREFIX:
-		{
-			type = "pref";
-			break;
-		}
-		case wordType::SUFFIX:
-		{
-			type = "s";
-			break;
-		}
-		default:
-		{
-			type = "FAIL";
-		}
-		} // End switch
-
-		out += entry->word + "  " + type + "\n";
-
-		while (entry->next != NULL)
-		{
-			entry = entry->next;
-
 			switch (entry->definition->type)
 			{
 			case wordType::NOUN:
@@ -761,8 +703,15 @@ string Dictionary::printDictionary()
 			}
 			} // End switch
 
-			out += entry->word + "  " + type + "\n";
+			def = entry->definition->def;
+			out += entry->word + "  " + type + " " + def + "\n";
+
+			if (entry->next != NULL)
+				entry = entry->next;
+			else
+				break;
 		} // End while
+
 	} // End for
 
 	return out;
