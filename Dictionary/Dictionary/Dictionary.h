@@ -23,7 +23,7 @@ class Dictionary
 {
 
 private:
-	static const int TABLE_SIZE = 1000; // The size of the array. Affects hash calculation when changed
+	static const int TABLE_SIZE = 100; // The size of the array. Affects hash calculation when changed
 	unsigned int entries; // Counter for the total amount of entries added
 
 	// Structure that represents individual definitions
@@ -54,8 +54,8 @@ public:
 	int hash(string word);
 	bool addEntry(string word);
 	bool addEntry(string word, wordType type, string definition);
-	bool addDefinition(string word, string def, wordType type);
-	bool changeDefinition(string word, string def, wordType type, int defIndex);
+	bool addDefinition(string word, wordType type, string def);
+	bool changeDefinition(string word, wordType type, string def, int defIndex);
 	wordType getType(string word);
 	string getDefinition(string word);
 	unsigned int getSize();
