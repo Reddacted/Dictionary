@@ -559,6 +559,13 @@ string Dictionary::getDefinition(string word)
 			ptr = ptr->next;
 	} // End while
 
+	// If the entry was the last in the linked list,
+	// then the loop skips it
+	if (ptr->word.compare(word) == 0)
+	{
+		return ptr->definition->def;
+	}
+
 	// If for some reason we fail, then return
 	// a failure string
 	return "FAILED";

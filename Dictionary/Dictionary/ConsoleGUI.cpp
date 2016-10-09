@@ -6,6 +6,10 @@ Will more than likely be used for the first presentation for this project
 #include <iostream>
 #include <string>
 #include <fstream> 
+#include <time.h>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 
 #define ENUM
 #include "Dictionary.h"
@@ -18,9 +22,10 @@ string displayMenu()
 		"-----Choose the function you would like to do-----\n"
 		"1. Add word \n"
 		"2. Add word with definition and type \n"
-		"3. Display number of entries \n"
-		"4. Save Dictionary \n"  
-		"5. Exit \n";
+		"3. Find word \n"
+		"4. Display number of entries \n"
+		"5. Save Dictionary \n"  
+		"6. Exit \n";
 
 	return message;
 }
@@ -44,7 +49,12 @@ int main()
 //	infile.open("109583 Words.txt");
 	infile.open("Dictionary.txt");
 
+	// records current time 
+	std::chrono::time_point<std::chrono::system_clock> start, end;
+	start = std::chrono::system_clock::now(); 
+
 	std::cout << "Loading dictionary... \n";
+
 	while (!infile.eof())
 	{
 		// Reset the little array
@@ -130,11 +140,18 @@ int main()
 
 	infile.close();
 
-	std::cout << "Done. \n\n";
+	// records ending time and calculates hwo much time has past since the start 
+	end = std::chrono::system_clock::now(); 
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 
+	std::cout << "Done. \n\n";
+	std::cout << std::setprecision(2) << std::fixed;
+	std::cout << "Time: " << elapsed_seconds.count() << " seconds\n\n";
+
+	// displays a looping menu to utilize the various functions 
 	while (!done)
 	{
-
 		// display menu
 		std::cout << displayMenu();
 		std::cout << "Enter choice: "; std::cin >> choice;
@@ -231,12 +248,111 @@ int main()
 				break;
 
 			}
-			case 3: // display the number of entries (completed)
+			case 3:
+			{
+				word = "";
+				std::cout << "Enter a word to get its entry: "; std::cin >> word;
+
+				// Start time here
+				start = std::chrono::system_clock::now();
+
+				// Find the definition
+				std::string wordDef = dic.getDefinition(word);
+
+				if (wordDef.compare("FAILED") == 0)
+				{
+					std::cout << "Word not in the dictionary.\n\n";
+					break;
+				}
+
+				// Find the word type
+				type = dic.getType(word);
+				std::string stringType;
+				switch (type)
+				{
+				case wordType::NOUN:
+				{
+					stringType = "n";
+					break;
+				}
+				case wordType::VERB:
+				{
+					stringType = "v";
+					break;
+				}
+				case wordType::ADJECTIVE:
+				{
+					stringType = "adj";
+					break;
+				}
+				case wordType::ADVERB:
+				{
+					stringType = "adv";
+					break;
+				}
+				case wordType::PRONOUN:
+				{
+					stringType = "pro";
+					break;
+				}
+				case wordType::PREPOSITION:
+				{
+					stringType = "prep";
+					break;
+				}
+				case wordType::CONJUNCTION:
+				{
+					stringType = "c";
+					break;
+				}
+				case wordType::DETERMINER:
+				{
+					stringType = "d";
+					break;
+				}
+				case wordType::EXCLAMATION:
+				{
+					stringType = "e";
+					break;
+				}
+				case wordType::PREFIX:
+				{
+					stringType = "pref";
+					break;
+				}
+				case wordType::SUFFIX:
+				{
+					stringType = "s";
+					break;
+				}
+				default:
+				{
+					stringType = "UNKNOWN";
+				}
+				} // End switch
+
+				std::cout << "Entry:\n"
+					<< "--------------\n"
+					<< "Word: " << word << "\n"
+					<< "Type: " << stringType << "\n"
+					<< "Definition: " << wordDef << "\n\n";
+
+				// End time here
+				end = std::chrono::system_clock::now();
+				std::chrono::duration<double> elapsed_seconds = end - start;
+				end_time = std::chrono::system_clock::to_time_t(end);
+
+				std::cout << std::setprecision(3) << std::fixed;
+				std::cout << "Time: " << elapsed_seconds.count() << " seconds\n\n";
+
+				break;
+			}
+			case 4: // display the number of entries (completed)
 			{
 				std::cout << "Number of entries: " << dic.getSize() << endl;
 				break;
 			}
-			case 4: // save to dictionary.txt
+			case 5: // save to dictionary.txt
 			{
 				outfile.open("Dictionary.txt");
 				outfile << dic.printDictionary();
@@ -245,7 +361,7 @@ int main()
 
 				break;
 			}
-			case 5:
+			case 6:
 			{
 				done = true;
 			}
