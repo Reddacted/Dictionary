@@ -8,7 +8,7 @@
 #define ENUM
 #include "Dictionary.h"
 
-int main()
+/*int main()
 {
 	Dictionary dic;
 	string word;
@@ -30,7 +30,6 @@ int main()
 	// puppy  FAIL 0
 	cout << dic.printDictionary() << endl;
 	cout << "------------------------------------" << endl;
-
 
 	// Second we will add a word with a definition and type
 	word = "cat";
@@ -93,4 +92,4 @@ int main()
 
 	system("pause");
 	return 0;
-}
+} */

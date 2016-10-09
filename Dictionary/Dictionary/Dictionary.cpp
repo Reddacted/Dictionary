@@ -27,8 +27,8 @@ Dictionary::Dictionary()
 		jisho[i] = new entry;
 		jisho[i]->word = "0";
 		jisho[i]->definition = new definition;
-		jisho[i]->definition->type = wordType::NOUN;
-		jisho[i]->definition->def = "0";
+		jisho[i]->definition->type = wordType::UNKNOWN;
+		jisho[i]->definition->def = "n/a";
 		jisho[i]->definition->next = NULL;
 		jisho[i]->next = NULL;
 	} // End for
@@ -267,7 +267,7 @@ bool Dictionary::addEntry(string word)
 	{
 		jisho[index]->word = word;
 		jisho[index]->definition->type = wordType::UNKNOWN;
-		jisho[index]->definition->def = "0";
+		jisho[index]->definition->def = "n/a";
 	} // End if
 	else if (jisho[index]->word.compare(word) == 0) // If the words are exactly the same
 	{
@@ -295,7 +295,7 @@ bool Dictionary::addEntry(string word)
 
 		n->word = word;
 		n->definition->type = wordType::UNKNOWN;
-		n->definition->def = "0";
+		n->definition->def = "n/a";
 		n->next = NULL;
 
 		ptr->next = n;
@@ -398,10 +398,7 @@ bool Dictionary::addDefinition(string word, wordType type, string def)
 		if (ptr->word.compare(word) == 0)
 			notFound = false;
 		else if (ptr->next != NULL)
-		{
 			ptr = ptr->next;
-			first = false;
-		}
 		else
 			break;
 	}
@@ -415,6 +412,7 @@ bool Dictionary::addDefinition(string word, wordType type, string def)
 	while (defptr->next != NULL)
 	{
 		defptr = defptr->next;
+		first = false;
 	}
 
 	// Now add the new definition
@@ -497,7 +495,8 @@ bool Dictionary::changeDefinition(string word, wordType type, string def, int de
 // getType
 // --------
 // Gets the type of the specified word
-// ------------------------------------
+// (Now that I think about it, this is pointless...
+// -------------------------------------------------
 // string word			The word
 //
 // return wordType		Returns the word's type as the wordType enum
@@ -553,7 +552,9 @@ string Dictionary::getDefinition(string word)
 	while (ptr->next != NULL)
 	{
 		if (ptr->word.compare(word) == 0)
+		{
 			return ptr->definition->def;
+		}
 		else
 			ptr = ptr->next;
 	} // End while
@@ -699,12 +700,12 @@ string Dictionary::printDictionary()
 			}
 			default:
 			{
-				type = "FAIL";
+				type = "UNKNOWN";
 			}
 			} // End switch
 
 			def = entry->definition->def;
-			out += entry->word + "  " + type + " " + def + "\n";
+			out += entry->word + "  " + type + "  " + def + "\n";
 
 			if (entry->next != NULL)
 				entry = entry->next;

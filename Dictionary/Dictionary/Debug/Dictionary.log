@@ -1,10 +1,3 @@
-﻿  Dictionary.cpp
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(56): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(259): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(324): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(385): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(454): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(508): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(543): warning C4018: '<': signed/unsigned mismatch
-  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
-  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)
+﻿  ConsoleGUI.cpp
+  Dictionary.vcxproj -> G:\Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
+  Dictionary.vcxproj -> G:\Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)
