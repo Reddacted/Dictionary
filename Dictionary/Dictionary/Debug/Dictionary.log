@@ -1,3 +1,5 @@
 ﻿  ConsoleGUI.cpp
-  Dictionary.vcxproj -> G:\Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
-  Dictionary.vcxproj -> G:\Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)
+e:\vince\my documents\github\dictionary\dictionary\dictionary\consolegui.cpp(346): warning C4101: 'typeChoice': unreferenced local variable
+e:\vince\my documents\github\dictionary\dictionary\dictionary\consolegui.cpp(365): warning C4101: 'typeChoice': unreferenced local variable
+  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
+  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)

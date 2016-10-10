@@ -111,10 +111,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Dictionary.h" />
+    <ClInclude Include="DictionaryArrayUnsorted.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleGUI.cpp" />
     <ClCompile Include="Dictionary.cpp" />
+    <ClCompile Include="DictionaryArrayUnsorted.cpp" />
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="TestDriver.cpp" />
   </ItemGroup>

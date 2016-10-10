@@ -1,18 +1,14 @@
-//
-//
+// Dictionary.cpp
+// Authors: Vince Cefalu & Matt Neis
 //
 //
 
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include <fstream>
 #include <locale>
 
 #include "Dictionary.h"
-
-
-using namespace std;
 
 
 // -----------
@@ -37,6 +33,21 @@ Dictionary::Dictionary()
 } // End constructor
 
 
+//
+//
+//
+std::string Dictionary::toLowercase(std::string word)
+{
+	std::locale loc;
+	for (int i = 0; i < word.length(); i++)
+	{
+		word[i] = tolower(word[i], loc);
+	}
+
+	return word;
+}
+
+
 // -----
 // hash
 // -----
@@ -45,12 +56,15 @@ Dictionary::Dictionary()
 // ------------
 // string word			The word
 // wordType type		The type
-int Dictionary::hash(string word)
+int Dictionary::hash(std::string word)
 {
 	unsigned int hash = 0; // The hash value for the word
 	int index; // Where the word is stored in the array
 	int minVal = 97; // 97 is an 'a' in ASCII
 	int value; // Temporary storage of values used in hash calc
+
+	// Make the word lowercase
+	word = toLowercase(word);
 
 	// Complex weight system based on gathered data
 	for (int i = 0; i < word.length(); i++)
@@ -82,6 +96,9 @@ int Dictionary::hash(string word)
 // ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
+	// Make the word lowercase
+	toLowercase(word);
+
 	unsigned int hash = 0; // The hash value for the word
 	int index; // Where the word is stored
 
@@ -105,6 +122,9 @@ int Dictionary::hash(string word, wordType type)
 // ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
+	// Make the word lowercase
+	toLowercase(word);
+
 	unsigned int hash = 0; // The hash value for the word
 	int index; // Where the word is stored
 
@@ -128,6 +148,9 @@ int Dictionary::hash(string word, wordType type)
 // ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
+	// Make the word lowercase
+	toLowercase(word);
+
 	unsigned int hash = 0; // The hash value for the word
 	int index; // Where the word is stored
 
@@ -163,6 +186,9 @@ int Dictionary::hash(string word, wordType type)
 // ------------------------------------------------------------------
 int Dictionary::hash(string word, wordType type)
 {
+	// Make the word lowercase
+	toLowercase(word);
+
 	unsigned int hash = 0; // The hash value for the word
 	int index; // Where the word is stored in the array
 
@@ -252,15 +278,8 @@ int Dictionary::hash(string word, wordType type)
 //
 // return bool			Returns true if the word was successfully
 //						added
-bool Dictionary::addEntry(string word)
+bool Dictionary::addEntry(std::string word)
 {
-	// Make the word lowercase
-	locale loc;
-	for (int i = 0; i < word.length(); i++)
-	{
-		word[i] = tolower(word[i], loc);
-	}
-
 	int index = hash(word);
 
 	if (jisho[index]->word == "0")
@@ -317,15 +336,8 @@ bool Dictionary::addEntry(string word)
 //
 // return bool			Returns true if the word was successfully
 //						added
-bool Dictionary::addEntry(string word, wordType type, string definition)
+bool Dictionary::addEntry(std::string word, wordType type, std::string definition)
 {
-	// Make the word lowercase
-	locale loc;
-	for (int i = 0; i < word.length(); i++)
-	{
-		word[i] = tolower(word[i], loc);
-	}
-
 	int index = hash(word);
 
 	if (jisho[index]->word == "0")
@@ -378,15 +390,8 @@ bool Dictionary::addEntry(string word, wordType type, string definition)
 // ---------------------------------------
 //
 //
-bool Dictionary::addDefinition(string word, wordType type, string def)
+bool Dictionary::addDefinition(std::string word, wordType type, std::string def)
 {
-	// Make the word lowercase
-	locale loc;
-	for (int i = 0; i < word.length(); i++)
-	{
-		word[i] = tolower(word[i], loc);
-	}
-
 	int index = hash(word);
 
 	// Attempt to find the specified word
@@ -445,15 +450,8 @@ bool Dictionary::addDefinition(string word, wordType type, string def)
 // int index		The index of the definition (0-inf)
 //
 // return bool		Returns true if it succeeds in changing the definition
-bool Dictionary::changeDefinition(string word, wordType type, string def, int defIndex)
+bool Dictionary::changeDefinition(std::string word, wordType type, std::string def, int defIndex)
 {
-	// Make the word lowercase
-	locale loc;
-	for (int i = 0; i < word.length(); i++)
-	{
-		word[i] = tolower(word[i], loc);
-	}
-
 	int index = hash(word);
 
 	// Attempt to find the specified word
@@ -500,15 +498,8 @@ bool Dictionary::changeDefinition(string word, wordType type, string def, int de
 // string word			The word
 //
 // return wordType		Returns the word's type as the wordType enum
-wordType Dictionary::getType(string word)
+wordType Dictionary::getType(std::string word)
 {
-	// Make the word lowercase
-	locale loc;
-	for (int i = 0; i < word.length(); i++)
-	{
-		word[i] = tolower(word[i], loc);
-	}
-
 	int index = hash(word);
 
 	// Find the specific word if there are multiple at
@@ -521,6 +512,13 @@ wordType Dictionary::getType(string word)
 		else
 			ptr = ptr->next;
 	} // End while
+
+	  // If the entry was the last in the linked list,
+	  // then the loop skips it
+	if (ptr->word.compare(word) == 0)
+	{
+		return ptr->definition->type;
+	}
 
 	// If we fail, then return the unkown type
 	return wordType::UNKNOWN;
@@ -535,15 +533,8 @@ wordType Dictionary::getType(string word)
 // string word				The word
 //
 // return definition		Returns the definition struct
-string Dictionary::getDefinition(string word)
+std::string Dictionary::getDefinition(std::string word)
 {
-	// Make the word lowercase
-	locale loc;
-	for (int i = 0; i < word.length(); i++)
-	{
-		word[i] = tolower(word[i], loc);
-	}
-
 	int index = hash(word);
 
 	// Find the specific word if there are multiple at
@@ -593,9 +584,9 @@ unsigned int Dictionary::getSize()
 // ------------------------------------------------
 // return string		Returns a string representation
 //						of the dictionary
-string Dictionary::printTable()
+std::string Dictionary::printTable()
 {
-	string out = "";
+	std::string out = "";
 	entry* entry;
 
 	for (int i = 0; i < TABLE_SIZE; i++)
@@ -635,12 +626,12 @@ string Dictionary::printTable()
 // the program is run
 // -------------------
 // return string		The dictionary as a string (can be huge so consider changing this later)
-string Dictionary::printDictionary()
+std::string Dictionary::printDictionary()
 {
 	entry* entry;
-	string type;
-	string def;
-	string out = "";
+	std::string type;
+	std::string def;
+	std::string out = "";
 
 	for (int i = 0; i < TABLE_SIZE; i++)
 	{
