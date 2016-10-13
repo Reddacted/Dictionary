@@ -33,9 +33,16 @@ Dictionary::Dictionary()
 } // End constructor
 
 
-//
-//
-//
+// ------------
+// toLowercase
+// ------------
+// Changes a word to all lowercase letters
+// Obviously ignores characters that have no lowercase,
+// or characters that are not from the Roman Alphabet
+// ---------------------------------------------------
+// string word		The string
+// 
+// return string	Returns the string in all lowercase letters
 std::string Dictionary::toLowercase(std::string word)
 {
 	std::locale loc;
@@ -56,12 +63,12 @@ std::string Dictionary::toLowercase(std::string word)
 // ------------
 // string word			The word
 // wordType type		The type
-int Dictionary::hash(std::string word)
+uint Dictionary::hash(std::string word)
 {
-	unsigned int hash = 0; // The hash value for the word
-	int index; // Where the word is stored in the array
-	int minVal = 97; // 97 is an 'a' in ASCII
-	int value; // Temporary storage of values used in hash calc
+	uint hash = 0; // The hash value for the word
+	uint index; // Where the word is stored in the array
+	uint minVal = 97; // 97 is an 'a' in ASCII
+	uint value; // Temporary storage of values used in hash calc
 
 	// Make the word lowercase
 	word = toLowercase(word);
@@ -69,18 +76,18 @@ int Dictionary::hash(std::string word)
 	// Complex weight system based on gathered data
 	for (int i = 0; i < word.length(); i++)
 	{
-		value = static_cast<int>(word[i]);
+		value = static_cast<uint>(word[i]);
 
-		int weightIndex = value - minVal;
+		uint weightIndex = value - minVal;
 		if (weightIndex >= 0 || weightIndex < 26)
 		{
 			value = value * weights[value - minVal];
 		}
+
 		hash += value;
 	} // End for
 
-
-//	cout << "Hash = " << hash << endl;
+	hash += word.length();
 
 	// Calculate the index using modulo operation
 	index = hash % TABLE_SIZE;
@@ -280,7 +287,7 @@ int Dictionary::hash(string word, wordType type)
 //						added
 bool Dictionary::addEntry(std::string word)
 {
-	int index = hash(word);
+	uint index = hash(word);
 
 	if (jisho[index]->word == "0")
 	{
@@ -338,7 +345,7 @@ bool Dictionary::addEntry(std::string word)
 //						added
 bool Dictionary::addEntry(std::string word, wordType type, std::string definition)
 {
-	int index = hash(word);
+	uint index = hash(word);
 
 	if (jisho[index]->word == "0")
 	{
@@ -388,11 +395,14 @@ bool Dictionary::addEntry(std::string word, wordType type, std::string definitio
 // --------------
 // Adds a definition to an existing entry
 // ---------------------------------------
+// string word		The word
+// wordType type	The word's type
+// string def		The word's definition
 //
-//
+// return bool		Returns true if the add operation succeeded
 bool Dictionary::addDefinition(std::string word, wordType type, std::string def)
 {
-	int index = hash(word);
+	uint index = hash(word);
 
 	// Attempt to find the specified word
 	entry* ptr = jisho[index];
@@ -443,7 +453,8 @@ bool Dictionary::addDefinition(std::string word, wordType type, std::string def)
 // changeDefinition
 // -----------------
 // Changes the selected definition of the selected word
-// -----------------------------------------------------
+// WARNING: Currently has zero catches for OOB indexes
+// ----------------------------------------------------
 // string word		The word
 // string def		The new definition
 // wordType type	The type associated with the definition
@@ -452,7 +463,7 @@ bool Dictionary::addDefinition(std::string word, wordType type, std::string def)
 // return bool		Returns true if it succeeds in changing the definition
 bool Dictionary::changeDefinition(std::string word, wordType type, std::string def, int defIndex)
 {
-	int index = hash(word);
+	uint index = hash(word);
 
 	// Attempt to find the specified word
 	entry* ptr = jisho[index];
@@ -500,7 +511,7 @@ bool Dictionary::changeDefinition(std::string word, wordType type, std::string d
 // return wordType		Returns the word's type as the wordType enum
 wordType Dictionary::getType(std::string word)
 {
-	int index = hash(word);
+	uint index = hash(word);
 
 	// Find the specific word if there are multiple at
 	// this index
@@ -535,7 +546,7 @@ wordType Dictionary::getType(std::string word)
 // return definition		Returns the definition struct
 std::string Dictionary::getDefinition(std::string word)
 {
-	int index = hash(word);
+	uint index = hash(word);
 
 	// Find the specific word if there are multiple at
 	// this index
@@ -570,7 +581,7 @@ std::string Dictionary::getDefinition(std::string word)
 // -----------------------------------------------------------
 // return unsigned int		Returns an unsigned integer representing
 //							the total amount of entries
-unsigned int Dictionary::getSize()
+uint Dictionary::getSize()
 {
 	return entries;
 } // End getSize
@@ -580,38 +591,38 @@ unsigned int Dictionary::getSize()
 // printTable
 // -----------
 // Prints a string representation of the dictionary
-// array for use in assessing distribution of data
+// array for use in assessing distribution of data within Excel
 // ------------------------------------------------
 // return string		Returns a string representation
 //						of the dictionary
 std::string Dictionary::printTable()
 {
 	std::string out = "";
+	uint rowCount;
 	entry* entry;
 
 	for (int i = 0; i < TABLE_SIZE; i++)
 	{
+		rowCount = 0;
 		entry = jisho[i];
-		out += "[";
 
-		if (jisho[i]->word == "0")
+		if (jisho[i]->word != "0")
 		{
-			out += " ";
-		} // End if
-		else
-		{
-			out += "X";
+			rowCount++;
+			while (entry->next != NULL)
+			{
+				entry = entry->next;
+				rowCount++;
+			} // End while
+
+			if (jisho[i]->word != "0")
+			{
+				rowCount++;
+			}
+
 		} // End else
 
-		out += "]";
-
-		while (entry->next != NULL)
-		{
-			entry = entry->next;
-			out += "->[X]";
-		} // End while
-
-		out += "\n";
+		out += std::to_string(rowCount) + "\n";
 	} // End for
 
 	return out;

@@ -1,0 +1,5 @@
+ball  n  sphere
+cat  n  feline
+dog  n  canine
+cute  adj  dogs and cats
+rekt  v  to be utterly destroyed
