@@ -65,31 +65,35 @@ std::string Dictionary::toLowercase(std::string word)
 // wordType type		The type
 uint Dictionary::hash(std::string word)
 {
-	uint hash = 0; // The hash value for the word
-	uint index; // Where the word is stored in the array
-	uint minVal = 97; // 97 is an 'a' in ASCII
-	uint value; // Temporary storage of values used in hash calc
+	ullong hash = 0; // The hash value for the word
+	ullong sum = 0;
+	ullong index; // Where the word is stored in the array
 
 	// Make the word lowercase
 	word = toLowercase(word);
 
-	// Complex weight system based on gathered data
+	// This time we will calculate the hash based on 'folding'
+	// the string 4 bytes at a time
+	// Courtesy of research.cs.vt.edu/AVresearch/hashing/strings.php
+	ullong multiplier = 1;
 	for (int i = 0; i < word.length(); i++)
 	{
-		value = static_cast<uint>(word[i]);
-
-		uint weightIndex = value - minVal;
-		if (weightIndex >= 0 || weightIndex < 26)
+		sum += static_cast<ullong>(word[i]) * multiplier;
+		multiplier *= 256;
+		if (i % 4 == 0 && i != 0)
 		{
-			value = value * weights[value - minVal];
+			hash += sum;
+			sum = 0;
+			multiplier = 1;
 		}
-
-		hash += value;
-	} // End for
-
-	hash += word.length();
+	}
+	if (sum != 0)
+		hash += sum;
 
 	// Calculate the index using modulo operation
+	// Shouldn't have any trouble going from long long
+	// to unsigned int, because of the modulo restricting
+	// the size after this calculation
 	index = hash % TABLE_SIZE;
 
 	return index;
@@ -99,14 +103,14 @@ uint Dictionary::hash(std::string word)
 /*
 // ------------------------------------------------------------------
 // After this comment, these are all the different attempts
-// we had tried for a proper hash function.
+// we had tried for a proper hash function in order of attempt.
 // ------------------------------------------------------------------
-int Dictionary::hash(string word, wordType type)
+uint Dictionary::hash(std::string word)
 {
 	// Make the word lowercase
 	toLowercase(word);
 
-	unsigned int hash = 0; // The hash value for the word
+	uint hash = 0; // The hash value for the word
 	int index; // Where the word is stored
 
 	// Simple use of ASCII values to calculate hash
@@ -115,8 +119,6 @@ int Dictionary::hash(string word, wordType type)
 		hash += static_cast<int>(word[i]);
 	}
 
-	cout << "Hash = " << hash << endl;
-
 	// Calculate the index using modulo operation
 	index = hash % TABLE_SIZE;
 
@@ -127,12 +129,12 @@ int Dictionary::hash(string word, wordType type)
 
 /*
 // ------------------------------------------------------------------
-int Dictionary::hash(string word, wordType type)
+uint Dictionary::hash(std::string word)
 {
 	// Make the word lowercase
 	toLowercase(word);
 
-	unsigned int hash = 0; // The hash value for the word
+	uint hash = 0; // The hash value for the word
 	int index; // Where the word is stored
 
 	// Use of ASCII values taken to various powers of 2
@@ -141,8 +143,6 @@ int Dictionary::hash(string word, wordType type)
 		hash += static_cast<int>(word[i]) * (pow(2, i));
 	}
 
-	cout << "Hash = " << hash << endl;
-
 	// Calculate the index using modulo operation
 	index = hash % TABLE_SIZE;
 
@@ -153,12 +153,12 @@ int Dictionary::hash(string word, wordType type)
 
 /*
 // ------------------------------------------------------------------
-int Dictionary::hash(string word, wordType type)
+uint Dictionary::hash(std::string word)
 {
 	// Make the word lowercase
 	toLowercase(word);
 
-	unsigned int hash = 0; // The hash value for the word
+	uint hash = 0; // The hash value for the word
 	int index; // Where the word is stored
 
 	// A simple weighting system of ASCII values
@@ -179,8 +179,6 @@ int Dictionary::hash(string word, wordType type)
 		hash += value * 5;
 	}
 
-	cout << "Hash = " << hash << endl;
-
 	// Calculate the index using modulo operation
 	index = hash % TABLE_SIZE;
 
@@ -191,7 +189,7 @@ int Dictionary::hash(string word, wordType type)
 
 /*
 // ------------------------------------------------------------------
-int Dictionary::hash(string word, wordType type)
+uint Dictionary::hash(std::string word)
 {
 	// Make the word lowercase
 	toLowercase(word);
@@ -262,18 +260,52 @@ int Dictionary::hash(string word, wordType type)
 		}
 	} // End for
 
+	// Calculate the index using modulo operation
+	index = hash % TABLE_SIZE;
 
-	cout << "Hash = " << hash << endl;
+	return index;
+} // End hash
+*/
+
+
+/*
+// ------------------------------------------------------------------
+uint Dictionary::hash(std::string word)
+{
+	uint hash = 0;		// The hash value for the word
+	uint index;			// Where the word is stored in the array
+	uint minVal = 97;	// 97 is an 'a' in ASCII
+	uint value;			// Temporary storage of values used in hash calc
+
+	// Make the word lowercase
+	word = toLowercase(word);
+
+	// Complex weight system based on gathered data
+	for (int i = 0; i < word.length(); i++)
+	{
+		value = static_cast<uint>(word[i]);
+
+		uint weightIndex = value - minVal;
+		if (weightIndex >= 0 || weightIndex < 26)
+		{
+			value = value * weights[value - minVal];
+		}
+
+		hash += value;
+	} // End for
+
+	hash += word.length();
 
 	// Calculate the index using modulo operation
 	index = hash % TABLE_SIZE;
 
 	return index;
 } // End hash
+*/
 // ------------------------------------------------------------------
 // End of hash functions
 // ------------------------------------------------------------------
-*/
+
 
 
 // ---------
@@ -614,11 +646,6 @@ std::string Dictionary::printTable()
 				entry = entry->next;
 				rowCount++;
 			} // End while
-
-			if (jisho[i]->word != "0")
-			{
-				rowCount++;
-			}
 
 		} // End else
 

@@ -83,9 +83,9 @@ int main()
 	std::string inWord[3];
 	std::string word = "";
 
-	// load base dictionary
-	//	infile.open("109583 Words.txt");
-	infile.open("Dictionary.txt");
+	// load base dictionary or optional word list
+	infile.open("41242 Words.txt");
+	//infile.open("Dictionary.txt");
 
 	std::cout << "Loading dictionary... \n";
 
@@ -111,7 +111,7 @@ int main()
 		} // End while
 
 
-		  // When the last loop ends, this will grab the last part
+		// When the last loop ends, this will grab the last part
 		if (i < 3)
 			inWord[i] = line;
 
@@ -129,7 +129,7 @@ int main()
 
 	infile.close();
 
-	std::cout << dic.getSize();
+	std::cout << dic.getSize() << std::endl;
 
 	// Now that we have the words, output to a file
 

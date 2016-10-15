@@ -16,7 +16,9 @@
 	enum class wordType {
 		NOUN = 1, VERB, ADJECTIVE, ADVERB, PRONOUN, PREPOSITION,
 		CONJUNCTION, DETERMINER, EXCLAMATION, PREFIX, SUFFIX, UNKNOWN };
+	
 	typedef unsigned int uint; // Because I'm lazy...
+	typedef unsigned long long ullong;
 class Dictionary
 {
 
