@@ -118,6 +118,7 @@
     <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="DictionaryArrayUnsorted.cpp" />
     <ClCompile Include="Driver.cpp" />
+    <ClCompile Include="MainDriver.cpp" />
     <ClCompile Include="TestDriver.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

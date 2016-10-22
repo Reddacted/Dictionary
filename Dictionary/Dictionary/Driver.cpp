@@ -8,68 +8,11 @@
 #include <fstream> 
 #include <iomanip>
 
-#define ENUM
 #include "Dictionary.h"
+#include "ConsoleGUI.cpp"
 
 
-wordType stringToType(const std::string typeAsString)
-{
-	wordType type;
-	// Get the actual type from the enum
-	if (typeAsString.compare("n") == 0)
-	{
-		type = wordType::NOUN;
-	}
-	else if (typeAsString.compare("v") == 0)
-	{
-		type = wordType::VERB;
-	}
-	else if (typeAsString.compare("adj") == 0)
-	{
-		type = wordType::ADJECTIVE;
-	}
-	else if (typeAsString.compare("adv") == 0)
-	{
-		type = wordType::ADVERB;
-	}
-	else if (typeAsString.compare("pro") == 0)
-	{
-		type = wordType::PRONOUN;
-	}
-	else if (typeAsString.compare("prep") == 0)
-	{
-		type = wordType::PREPOSITION;
-	}
-	else if (typeAsString.compare("c") == 0)
-	{
-		type = wordType::CONJUNCTION;
-	}
-	else if (typeAsString.compare("d") == 0)
-	{
-		type = wordType::DETERMINER;
-	}
-	else if (typeAsString.compare("e") == 0)
-	{
-		type = wordType::EXCLAMATION;
-	}
-	else if (typeAsString.compare("pref") == 0)
-	{
-		type = wordType::PREFIX;
-	}
-	else if (typeAsString.compare("s") == 0)
-	{
-		type = wordType::SUFFIX;
-	}
-	else
-	{
-		type = wordType::UNKNOWN;
-	}
-
-	return type;
-}
-
-
-int main()
+static int excelTest()
 {
 	// variables and objects
 	//	DictionaryArrayUnsorted dic;

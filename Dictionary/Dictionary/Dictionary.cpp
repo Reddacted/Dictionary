@@ -43,15 +43,13 @@ Dictionary::Dictionary()
 // string word		The string
 // 
 // return string	Returns the string in all lowercase letters
-std::string Dictionary::toLowercase(std::string word)
+void Dictionary::toLowercase(std::string &word)
 {
 	std::locale loc;
 	for (int i = 0; i < word.length(); i++)
 	{
 		word[i] = tolower(word[i], loc);
 	}
-
-	return word;
 }
 
 
@@ -63,14 +61,14 @@ std::string Dictionary::toLowercase(std::string word)
 // ------------
 // string word			The word
 // wordType type		The type
-uint Dictionary::hash(std::string word)
+uint Dictionary::hash(std::string &word)
 {
 	ullong hash = 0; // The hash value for the word
 	ullong sum = 0;
-	ullong index; // Where the word is stored in the array
+	uint index; // Where the word is stored in the array
 
 	// Make the word lowercase
-	word = toLowercase(word);
+	toLowercase(word);
 
 	// This time we will calculate the hash based on 'folding'
 	// the string 4 bytes at a time
@@ -94,7 +92,7 @@ uint Dictionary::hash(std::string word)
 	// Shouldn't have any trouble going from long long
 	// to unsigned int, because of the modulo restricting
 	// the size after this calculation
-	index = hash % TABLE_SIZE;
+	index = static_cast<uint>(hash % TABLE_SIZE);
 
 	return index;
 } // End hash
@@ -317,7 +315,7 @@ uint Dictionary::hash(std::string word)
 //
 // return bool			Returns true if the word was successfully
 //						added
-bool Dictionary::addEntry(std::string word)
+bool Dictionary::addEntry(std::string &word)
 {
 	uint index = hash(word);
 
@@ -375,7 +373,7 @@ bool Dictionary::addEntry(std::string word)
 //
 // return bool			Returns true if the word was successfully
 //						added
-bool Dictionary::addEntry(std::string word, wordType type, std::string definition)
+bool Dictionary::addEntry(std::string &word, wordType type, std::string definition)
 {
 	uint index = hash(word);
 
@@ -432,7 +430,7 @@ bool Dictionary::addEntry(std::string word, wordType type, std::string definitio
 // string def		The word's definition
 //
 // return bool		Returns true if the add operation succeeded
-bool Dictionary::addDefinition(std::string word, wordType type, std::string def)
+bool Dictionary::addDefinition(std::string &word, wordType type, std::string def)
 {
 	uint index = hash(word);
 
@@ -493,7 +491,7 @@ bool Dictionary::addDefinition(std::string word, wordType type, std::string def)
 // int index		The index of the definition (0-inf)
 //
 // return bool		Returns true if it succeeds in changing the definition
-bool Dictionary::changeDefinition(std::string word, wordType type, std::string def, int defIndex)
+bool Dictionary::changeDefinition(std::string &word, wordType type, std::string def, int defIndex)
 {
 	uint index = hash(word);
 
@@ -541,7 +539,7 @@ bool Dictionary::changeDefinition(std::string word, wordType type, std::string d
 // string word			The word
 //
 // return wordType		Returns the word's type as the wordType enum
-wordType Dictionary::getType(std::string word)
+wordType Dictionary::getType(std::string &word)
 {
 	uint index = hash(word);
 
@@ -576,7 +574,7 @@ wordType Dictionary::getType(std::string word)
 // string word				The word
 //
 // return definition		Returns the definition struct
-std::string Dictionary::getDefinition(std::string word)
+std::string Dictionary::getDefinition(std::string &word)
 {
 	uint index = hash(word);
 
@@ -732,6 +730,11 @@ std::string Dictionary::printDictionary()
 			case wordType::SUFFIX:
 			{
 				type = "s";
+				break;
+			}
+			case wordType::ABBREVIATION:
+			{
+				type = "abbr";
 				break;
 			}
 			default:

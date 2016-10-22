@@ -10,14 +10,15 @@
 
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
+#define ENUM
 
 	// The types that words can have along with an UNKNOWN identifier when
 	// attempting to find the type and you are unsuccessful
 	enum class wordType {
 		NOUN = 1, VERB, ADJECTIVE, ADVERB, PRONOUN, PREPOSITION,
-		CONJUNCTION, DETERMINER, EXCLAMATION, PREFIX, SUFFIX, UNKNOWN };
+		CONJUNCTION, DETERMINER, EXCLAMATION, PREFIX, SUFFIX, ABBREVIATION, UNKNOWN };
 	
-	typedef unsigned int uint; // Because I'm lazy...
+	typedef unsigned int uint;
 	typedef unsigned long long ullong;
 class Dictionary
 {
@@ -50,17 +51,17 @@ private:
 								1512, 7638, 55945, 29805, 72211, 72089, 32512, 1698, 70945, 73182,
 								66797, 37748, 9680, 6577, 3015, 20259, 4154};
 
-	std::string toLowercase(std::string word);
+	void toLowercase(std::string &word);
 
 public:
 	Dictionary();
-	uint hash(std::string word);
-	bool addEntry(std::string word);
-	bool addEntry(std::string word, wordType type, std::string definition);
-	bool addDefinition(std::string word, wordType type, std::string def);
-	bool changeDefinition(std::string word, wordType type, std::string def, int defIndex);
-	wordType getType(std::string word);
-	std::string getDefinition(std::string word);
+	uint hash(std::string &word);
+	bool addEntry(std::string &word);
+	bool addEntry(std::string &word, wordType type, std::string definition);
+	bool addDefinition(std::string &word, wordType type, std::string def);
+	bool changeDefinition(std::string &word, wordType type, std::string def, int defIndex);
+	wordType getType(std::string &word);
+	std::string getDefinition(std::string &word);
 	uint getSize();
 	std::string printTable();	// Only really used to see the distribution of the hash table and make improvements
 	std::string printDictionary();
