@@ -1,12 +1,5 @@
 ﻿  Dictionary.cpp
 e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(49): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(77): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  TestDriver.cpp
-  MainDriver.cpp
-  Driver.cpp
-  ConsoleGUI.cpp
-  Generating Code...
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(78): warning C4018: '<': signed/unsigned mismatch
   Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
   Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)

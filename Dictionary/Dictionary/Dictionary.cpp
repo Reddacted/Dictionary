@@ -74,11 +74,12 @@ uint Dictionary::hash(std::string &word)
 	// the string 4 bytes at a time
 	// Courtesy of research.cs.vt.edu/AVresearch/hashing/strings.php
 	ullong multiplier = 1;
+
 	for (int i = 0; i < word.length(); i++)
 	{
 		sum += static_cast<ullong>(word[i]) * multiplier;
 		multiplier *= 256;
-		if (i % 4 == 0 && i != 0)
+		if (i % 3 == 0 && i != 0)
 		{
 			hash += sum;
 			sum = 0;
