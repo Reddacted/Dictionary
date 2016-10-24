@@ -10,18 +10,19 @@
 
 #ifndef DICTIONARYARRAYUNSORTED_H
 #define DICTIONARYARRAYUNSORTED_H
+#define ENUM
 
 // The types that words can have along with an UNKNOWN identifier when
 // attempting to find the type and you are unsuccessful
 enum class wordType {
 	NOUN = 1, VERB, ADJECTIVE, ADVERB, PRONOUN, PREPOSITION,
-	CONJUNCTION, DETERMINER, EXCLAMATION, PREFIX, SUFFIX, UNKNOWN
+	CONJUNCTION, DETERMINER, EXCLAMATION, PREFIX, SUFFIX, ABBREVIATION, UNKNOWN
 };
 class DictionaryArrayUnsorted
 {
 
 private:
-	static const int TABLE_SIZE = 110000; // The size of the array. Affects hash calculation when changed
+	static const int TABLE_SIZE = 200000; // The size of the array. Affects hash calculation when changed
 	unsigned int entries; // Counter for the total amount of entries added
 
 						  // Structure that represents individual definitions

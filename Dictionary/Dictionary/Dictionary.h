@@ -24,7 +24,7 @@ class Dictionary
 {
 
 private:
-	static const int TABLE_SIZE = 109581; // The size of the array. Affects hash calculation when changed
+	static const int TABLE_SIZE = 100000; // The size of the array. Affects hash calculation when changed
 	uint entries; // Counter for the total amount of entries added
 
 	// Structure that represents individual definitions

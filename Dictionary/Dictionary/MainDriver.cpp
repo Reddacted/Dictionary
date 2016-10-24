@@ -5,7 +5,7 @@ void main()
 {
 //	test();
 
-//	consoleGUI();
+	consoleGUI();
 
-	excelTest();
+//	excelTest();
 }

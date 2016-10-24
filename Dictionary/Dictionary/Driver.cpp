@@ -15,7 +15,7 @@
 static int excelTest()
 {
 	// variables and objects
-	//	DictionaryArrayUnsorted dic;
+//	DictionaryArrayUnsorted dic;
 	Dictionary dic;
 	wordType type = wordType::UNKNOWN;
 	std::ifstream infile;
@@ -27,8 +27,8 @@ static int excelTest()
 	std::string word = "";
 
 	// load base dictionary or optional word list
-	//infile.open("41242 Words.txt");
-	infile.open("Dictionary.txt");
+	infile.open("41242 Words.txt");
+//	infile.open("Dictionary.txt");
 
 	std::cout << "Loading dictionary... \n";
 

@@ -164,6 +164,7 @@ static wordType stringToType(std::string typeAsString)
 static wordType chooseType()
 {
 	std::string typeMenu =
+		"Choose the word's type: \n"
 		"1.  Noun \n"
 		"2.  Verb \n"
 		"3.  Adjective \n"
@@ -262,7 +263,9 @@ static int consoleGUI()
 	std::string word = "";
 
 	// load base dictionary
+//	infile.open("6 Words With Type.txt");
 //	infile.open("109583 Words.txt");
+//	infile.open("41242 Words.txt");
 	infile.open("Dictionary.txt");
 
 	// records current time 
@@ -341,10 +344,7 @@ static int consoleGUI()
 
 				// enter it into the dictionary
 				if (dic.addEntry(word))
-				{
 					std::cout << "Successfully added into the dictionary. \n";
-
-				}
 				else
 					std::cout << "Entry is already in the dictionary. \n";
 
@@ -358,6 +358,7 @@ static int consoleGUI()
 
 				std::cout << "Enter a word to enter into the dictionary: "; std::cin >> word;
 				std::cout << "Enter a definition for the word: "; std::cin.ignore(); getline(std::cin, definition);
+				std::cout << "\n\n\n\n";
 				type = chooseType();
 
 				if (dic.addEntry(word, type, definition))
@@ -382,9 +383,11 @@ static int consoleGUI()
 				if (wordDef.compare("FAILED") == 0)
 				{
 					std::cout << "Word not in the dictionary.";
-					screenClear(SCREEN_HEIGHT - 8);
+					screenClear(SCREEN_HEIGHT - 9);
 					break;
 				}
+
+				screenClear(SCREEN_HEIGHT - 7);
 
 				// Find the word type
 				type = dic.getType(word);
@@ -426,7 +429,7 @@ static int consoleGUI()
 				if (wordDef.compare("FAILED") == 0)
 				{
 					std::cout << "Word not in the dictionary.";
-					screenClear(SCREEN_HEIGHT - 8);
+					screenClear(SCREEN_HEIGHT - 9);
 					break;
 				}
 

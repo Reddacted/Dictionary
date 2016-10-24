@@ -32,9 +32,7 @@ DictionaryArrayUnsorted::DictionaryArrayUnsorted()
 } // End constructor
 
 
-  //
-  //
-  //
+
 std::string DictionaryArrayUnsorted::toLowercase(std::string word)
 {
 	std::locale loc;
