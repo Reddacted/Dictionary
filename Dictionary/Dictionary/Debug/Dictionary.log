@@ -1,5 +1,13 @@
-﻿  Dictionary.cpp
-e:\vince\my documents\visual studio 2015\projects\dictionary\dictionary\dictionary.cpp(51): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\visual studio 2015\projects\dictionary\dictionary\dictionary.cpp(95): warning C4018: '<': signed/unsigned mismatch
-  Dictionary.vcxproj -> e:\vince\my documents\visual studio 2015\Projects\Dictionary\Debug\Dictionary.exe
-  Dictionary.vcxproj -> e:\vince\my documents\visual studio 2015\Projects\Dictionary\Debug\Dictionary.pdb (Partial PDB)
+﻿  TestDriver.cpp
+  MainDriver.cpp
+  Driver.cpp
+  DictionaryArrayUnsorted.cpp
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionaryarrayunsorted.cpp(39): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionaryarrayunsorted.cpp(94): warning C4018: '<': signed/unsigned mismatch
+  Dictionary.cpp
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(49): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(78): warning C4018: '<': signed/unsigned mismatch
+  ConsoleGUI.cpp
+  Generating Code...
+  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
+  Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)

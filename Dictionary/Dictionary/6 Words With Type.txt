@@ -1,0 +1,6 @@
+cat  n
+dog  n
+cute  adj
+quickly  adv
+run  v
+and  c
