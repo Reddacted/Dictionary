@@ -1,7 +1,13 @@
 // Dictionary.cpp
 // Authors: Vince Cefalu & Matt Neis
 //
+// This is a simple unsorted array I quickly threw together
+// to compare speeds to the hash function
 //
+// I did not bother creating a sorted array because the
+// best and worst case for that is the same as for the hash
+// function approach, the difference being the hash function
+// hits the best case (hopefully) much more often
 
 #include <cstdlib>
 #include <iostream>

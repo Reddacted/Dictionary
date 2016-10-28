@@ -1,11 +1,10 @@
-#include "TestDriver.cpp"
-#include "Driver.cpp"
+#include "ExcelDriver.cpp"
 
 void main()
 {
-//	test();
-
+	// The console menu based program for utilizing the dictionary
 	consoleGUI();
 
+	// The test program that outputs text files for Excel graphing
 //	excelTest();
 }

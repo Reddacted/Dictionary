@@ -1,7 +1,5 @@
 // Dictionary.cpp
 // Authors: Vince Cefalu & Matt Neis
-//
-//
 
 #include <cstdlib>
 #include <iostream>
@@ -37,7 +35,7 @@ Dictionary::Dictionary()
 // toLowercase
 // ------------
 // Changes a word to all lowercase letters
-// Obviously ignores characters that have no lowercase,
+// Ignores characters that have no lowercase,
 // or characters that are not from the Roman Alphabet
 // ---------------------------------------------------
 // string word		The string
@@ -56,28 +54,28 @@ void Dictionary::toLowercase(std::string &word)
 // -----
 // hash
 // -----
-// Calculates the hash value used to calculate the index
+// Calculates the hash value used to find the index
 // of the word
 // ------------
 // string word			The word
 // wordType type		The type
 uint Dictionary::hash(std::string &word)
 {
-	ullong hash = 0; // The hash value for the word
-	ullong sum = 0;
+	uint hash = 0; // The hash value for the word
+	uint sum = 0;
 	uint index; // Where the word is stored in the array
 
 	// Make the word lowercase
 	toLowercase(word);
 
 	// This time we will calculate the hash based on 'folding'
-	// the string 4 bytes at a time
+	// the string 3 bytes at a time
 	// Courtesy of research.cs.vt.edu/AVresearch/hashing/strings.php
-	ullong multiplier = 1;
+	uint multiplier = 1;
 
 	for (int i = 0; i < word.length(); i++)
 	{
-		sum += static_cast<ullong>(word[i]) * multiplier;
+		sum += static_cast<uint>(word[i]) * multiplier;
 		multiplier *= 256;
 		if (i % 3 == 0 && i != 0)
 		{
@@ -90,9 +88,6 @@ uint Dictionary::hash(std::string &word)
 		hash += sum;
 
 	// Calculate the index using modulo operation
-	// Shouldn't have any trouble going from long long
-	// to unsigned int, because of the modulo restricting
-	// the size after this calculation
 	index = static_cast<uint>(hash % TABLE_SIZE);
 
 	return index;
@@ -310,8 +305,9 @@ uint Dictionary::hash(std::string word)
 // ---------
 // addEntry
 // ---------
-// Adds an entry to the dictionary
-// --------------------------------
+// Adds an entry to the dictionary, word only
+// The definition and type are left at default
+// --------------------------------------------
 // string word			The word
 //
 // return bool			Returns true if the word was successfully
@@ -320,13 +316,13 @@ bool Dictionary::addEntry(std::string &word)
 {
 	uint index = hash(word);
 
-	if (jisho[index]->word == "0")
+	if (jisho[index]->word == "0") // If there is no entry
 	{
 		jisho[index]->word = word;
 		jisho[index]->definition->type = wordType::UNKNOWN;
 		jisho[index]->definition->def = "n/a";
 	} // End if
-	else if (jisho[index]->word.compare(word) == 0) // If the words are exactly the same
+	else if (jisho[index]->word.compare(word) == 0) // If the word already exists
 	{
 		// Entry add failed
 		return false;
@@ -366,8 +362,9 @@ bool Dictionary::addEntry(std::string &word)
 // ---------
 // addEntry
 // ---------
-// Adds an entry to the dictionary
-// --------------------------------
+// Adds an entry to the dictionary, with word,
+// definition and type
+// --------------------
 // string word			The word
 // wordType type		The type of word
 // string definition	The definition of the word
@@ -425,7 +422,11 @@ bool Dictionary::addEntry(std::string &word, wordType type, std::string definiti
 // addDefinition
 // --------------
 // Adds a definition to an existing entry
-// ---------------------------------------
+// Cannot possibly check to duplicate definitions
+// because subtle changes in wording, punctuation, etc.
+// can be present. Therefore it will just add to the
+// end of the list of definitions
+// -------------------------------
 // string word		The word
 // wordType type	The word's type
 // string def		The word's definition
@@ -484,8 +485,7 @@ bool Dictionary::addDefinition(std::string &word, wordType type, std::string def
 // changeDefinition
 // -----------------
 // Changes the selected definition of the selected word
-// WARNING: Currently has zero catches for OOB indexes
-// ----------------------------------------------------
+// -----------------------------------------------------
 // string word		The word
 // string def		The new definition
 // wordType type	The type associated with the definition
@@ -495,6 +495,10 @@ bool Dictionary::addDefinition(std::string &word, wordType type, std::string def
 bool Dictionary::changeDefinition(std::string &word, wordType type, std::string def, int defIndex)
 {
 	uint index = hash(word);
+
+	// Make sure the index is not negative
+	if (defIndex < 0)
+		return false;
 
 	// Attempt to find the specified word
 	entry* ptr = jisho[index];
@@ -535,7 +539,8 @@ bool Dictionary::changeDefinition(std::string &word, wordType type, std::string 
 // getType
 // --------
 // Gets the type of the specified word
-// (Now that I think about it, this is pointless...
+// Might be useful for sorting purposes later on, but
+// currently only grabs the first definition's type
 // -------------------------------------------------
 // string word			The word
 //
@@ -571,10 +576,11 @@ wordType Dictionary::getType(std::string &word)
 // getDefinition
 // --------------
 // Finds a specific word's definition
-// -----------------------------------
+// Again, only goes for the first definition currently
+// ----------------------------------------------------
 // string word				The word
 //
-// return definition		Returns the definition struct
+// return string		Returns the definition as a string
 std::string Dictionary::getDefinition(std::string &word)
 {
 	uint index = hash(word);
@@ -593,7 +599,8 @@ std::string Dictionary::getDefinition(std::string &word)
 	} // End while
 
 	// If the entry was the last in the linked list,
-	// then the loop skips it
+	// then the previous loop skips it, so we need to
+	// get it here
 	if (ptr->word.compare(word) == 0)
 	{
 		return ptr->definition->def;
@@ -623,7 +630,9 @@ uint Dictionary::getSize()
 // -----------
 // Prints a string representation of the dictionary
 // array for use in assessing distribution of data within Excel
-// ------------------------------------------------
+// Each row is an array index, and the number is how many words
+// are stored in that index
+// -------------------------
 // return string		Returns a string representation
 //						of the dictionary
 std::string Dictionary::printTable()
@@ -658,11 +667,11 @@ std::string Dictionary::printTable()
 // ----------------
 // printDictionary
 // ----------------
-// Prints the dictionary to a file that is formatted
-// so that it can be reused and rewritten to whenever
+// Prints the dictionary to a text file that is formatted
+// so that it can be reused and rewritten whenever
 // the program is run
 // -------------------
-// return string		The dictionary as a string (can be huge so consider changing this later)
+// return string		The dictionary as a string (will be huge so change this later)
 std::string Dictionary::printDictionary()
 {
 	entry* entry;

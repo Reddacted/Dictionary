@@ -1,7 +1,5 @@
 // Dictionary.h
 // Authors: Vince Cefalu & Matt Neis
-//
-//
 
 #include <cstdlib>
 #include <iostream>
@@ -25,7 +23,7 @@ private:
 	static const int TABLE_SIZE = 200000; // The size of the array. Affects hash calculation when changed
 	unsigned int entries; // Counter for the total amount of entries added
 
-						  // Structure that represents individual definitions
+	// Structure that represents individual definitions
 	struct definition
 	{
 		wordType type;			// The type of the word for this definition
@@ -33,7 +31,7 @@ private:
 		definition* next;		// The pointer to the next definition if it exists
 	};
 
-	// The item structure that represents a dictionary entry
+	// The structure that represents a dictionary entry
 	struct entry
 	{
 		std::string word;			// The word stored in English (for the moment)

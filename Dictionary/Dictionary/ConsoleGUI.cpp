@@ -248,7 +248,6 @@ static std::string displayMenu()
 
 static int consoleGUI()
 {
-	// variables and objects
 //	DictionaryArrayUnsorted dic;
 	Dictionary dic;
 	wordType type = wordType::UNKNOWN;
@@ -274,6 +273,7 @@ static int consoleGUI()
 
 	std::cout << "Loading dictionary... \n";
 
+	// Begin reading words from file
 	while (!infile.eof())
 	{
 		// Reset the little array
@@ -283,7 +283,6 @@ static int consoleGUI()
 
 		getline(infile, line);
 
-		// If there is not 
 		// Split the line into the two parts
 		// From stackOverflow
 		size_t pos = 0;
@@ -297,12 +296,15 @@ static int consoleGUI()
 
 
 		// When the last loop ends, this will grab the last part
+		// if the loop broke off early
 		if (i < 3)
 			inWord[i] = line;
 
 		// Convert the string type to wordType
 		type = stringToType(inWord[1]);
 
+		// Add the entry with different functions based
+		// on what parts we have
 		if (!inWord[0].empty())
 		{
 			if (inWord[2].empty())
@@ -314,7 +316,7 @@ static int consoleGUI()
 
 	infile.close();
 
-	// records ending time and calculates how much time has passed since the start 
+	// records ending time and calculates how much time has passed since starting to load
 	end = std::chrono::system_clock::now(); 
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
@@ -336,7 +338,7 @@ static int consoleGUI()
 		// switch based on choice
 		switch (choice)
 		{
-			case 1: // add word (completed)
+			case 1: // add word
 			{
 				word = "";
 
@@ -370,7 +372,7 @@ static int consoleGUI()
 				break;
 
 			}
-			case 3:
+			case 3: // Change definition
 			{
 				word = "";
 				std::string definition;
@@ -414,7 +416,7 @@ static int consoleGUI()
 				screenClear(SCREEN_HEIGHT - 9);
 				break;
 			}
-			case 4:
+			case 4: // Find word
 			{
 				word = "";
 
@@ -456,13 +458,13 @@ static int consoleGUI()
 
 				break;
 			}
-			case 5: // display the number of entries (completed)
+			case 5: // display the number of entries
 			{
 				std::cout << "Number of entries: " << dic.getSize() << std::endl;
 				screenClear(SCREEN_HEIGHT - 10);
 				break;
 			}
-			case 6: // save to dictionary.txt
+			case 6: // save to Dictionary.txt
 			{
 				outfile.open("Dictionary.txt");
 				outfile << dic.printDictionary();
@@ -472,7 +474,7 @@ static int consoleGUI()
 
 				break;
 			}
-			case 7:
+			case 7: // Exit the program
 			{
 				screenClear(SCREEN_HEIGHT);
 				done = true;

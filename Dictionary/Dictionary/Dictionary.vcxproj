@@ -117,7 +117,7 @@
     <ClCompile Include="ConsoleGUI.cpp" />
     <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="DictionaryArrayUnsorted.cpp" />
-    <ClCompile Include="Driver.cpp" />
+    <ClCompile Include="ExcelDriver.cpp" />
     <ClCompile Include="MainDriver.cpp" />
     <ClCompile Include="TestDriver.cpp" />
   </ItemGroup>

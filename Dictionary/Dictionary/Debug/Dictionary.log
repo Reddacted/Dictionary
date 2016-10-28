@@ -1,13 +1,10 @@
 ﻿  TestDriver.cpp
-  MainDriver.cpp
   Driver.cpp
-  DictionaryArrayUnsorted.cpp
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionaryarrayunsorted.cpp(39): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionaryarrayunsorted.cpp(94): warning C4018: '<': signed/unsigned mismatch
   Dictionary.cpp
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(49): warning C4018: '<': signed/unsigned mismatch
-e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(78): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(47): warning C4018: '<': signed/unsigned mismatch
+e:\vince\my documents\github\dictionary\dictionary\dictionary\dictionary.cpp(76): warning C4018: '<': signed/unsigned mismatch
   ConsoleGUI.cpp
   Generating Code...
+  LINK : E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe not found or not built by the last incremental link; performing full link
   Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.exe
   Dictionary.vcxproj -> E:\Vince\My Documents\GitHub\Dictionary\Dictionary\Debug\Dictionary.pdb (Partial PDB)
